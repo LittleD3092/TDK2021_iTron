@@ -31,8 +31,8 @@ void TrackChassis::move(int leftSpeed, int rightSpeed)
 	analogWrite(_rightWheelIN1, abs(rightSpeed_inRange) );
 
 	//set direction
-	digitalWrite(_leftWheelIN2, (leftSpeed_inRange >= 0) );
-	digitalWrite(_rightWheelIN2, (rightSpeed_inRange <= 0) );
+	digitalWrite(_leftWheelIN2, (leftSpeed_inRange > 0) );
+	digitalWrite(_rightWheelIN2, (rightSpeed_inRange < 0) );
 }
 
 int TrackChassis::inRangePM255(int number)
