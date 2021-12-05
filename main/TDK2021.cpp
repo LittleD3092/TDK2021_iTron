@@ -241,3 +241,10 @@ void ClimbBoost::pull()
 	digitalWrite(_pushIN2, HIGH);
 	analogWrite(_pushPWM, 255);
 }
+
+void ClimbBoost::stop()
+{
+  digitalWrite(_pushIN1, LOW);
+  digitalWrite(_pushIN2, LOW);
+  analogWrite(_pushPWM, 0);
+}

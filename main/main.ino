@@ -7,9 +7,9 @@
 
 //chassis motor
 #define chassis_DCMotorLeftIN1 2
-#define chassis_DCMotorLeftIN2 52
+#define chassis_DCMotorLeftIN2 22
 #define chassis_DCMotorRightIN1 3
-#define chassis_DCMotorRightIN2 53
+#define chassis_DCMotorRightIN2 23
 
 //flag grip
 #define flagGrip_LinearActuator1IN1 38
@@ -267,6 +267,18 @@ void loop()
   //	ballgripservo1.write(potentio4_value * 180 / 1024);
   //}
 
-
+  if( ps2x.Button(PSB_PAD_LEFT) )
+  {
+    climbboost.push();
+  }
+  else if( ps2x.Button( PSB_PAD_RIGHT ) )
+  {
+    climbboost.pull();
+  }
+  else
+  {
+    climbboost.stop();
+  }
+  
 	delay(50);
 }

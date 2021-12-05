@@ -76,6 +76,7 @@ class ClimbBoost
 
 		void push();
 		void pull();
+    void stop();
 
 	private:
 		int _pushIN1;
