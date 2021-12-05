@@ -282,5 +282,5 @@ void loop()
     climbboost.stop();
   }
   
-	delay(50);
+	delay(1);
 }
