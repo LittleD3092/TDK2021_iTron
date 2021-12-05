@@ -94,10 +94,10 @@ void FlagGrip::move(int stepy, int vz)
 		{
 			digitalWrite(_yAxisNO1CLK, HIGH);
 			digitalWrite(_yAxisNO2CLK, HIGH);
-			delay(100);
+			delay(1);
 			digitalWrite(_yAxisNO1CLK, LOW);
 			digitalWrite(_yAxisNO2CLK, LOW);
-			delay(100);
+			delay(1);
 		}
 	}
 	else
@@ -108,10 +108,10 @@ void FlagGrip::move(int stepy, int vz)
 		{
 			digitalWrite(_yAxisNO1CLK, HIGH);
 			digitalWrite(_yAxisNO2CLK, HIGH);
-			delay(100);
+			delay(1);
 			digitalWrite(_yAxisNO1CLK, LOW);
 			digitalWrite(_yAxisNO2CLK, LOW);
-			delay(100);
+			delay(1);
 		}
 	}
 
@@ -199,9 +199,9 @@ void BallGrip::move(int stepy, int vz)
 		for(int i = 0; i < stepy; i++)
 		{
 			digitalWrite(_yAxisCLK, HIGH);
-			delay(100);
+			delay(1);
 			digitalWrite(_yAxisCLK, LOW);
-			delay(100);
+			delay(1);
 		}
 	}
 	else
@@ -210,9 +210,9 @@ void BallGrip::move(int stepy, int vz)
 		for(int i = 0; i < -stepy; i++)
 		{
 			digitalWrite(_yAxisCLK, HIGH);
-			delay(100);
+			delay(1);
 			digitalWrite(_yAxisCLK, LOW);
-			delay(100);
+			delay(1);
 		}
 	}
 }
