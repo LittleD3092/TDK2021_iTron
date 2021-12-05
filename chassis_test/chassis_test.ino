@@ -7,9 +7,9 @@
 
 //chassis motor
 #define chassis_DCMotorLeftIN1 2
-#define chassis_DCMotorLeftIN2 52
+#define chassis_DCMotorLeftIN2 23
 #define chassis_DCMotorRightIN1 3
-#define chassis_DCMotorRightIN2 53
+#define chassis_DCMotorRightIN2 22
 
 //flag grip
 #define flagGrip_LinearActuator1IN1 24
@@ -95,7 +95,7 @@ TrackChassis chassis(chassis_DCMotorLeftIN1, chassis_DCMotorLeftIN2, chassis_DCM
 
 // ClimbBoost climbboost(climbBoost_LinearActuatorIN1, climbBoost_LinearActuatorIN2, climbBoost_LinearActuatorPWM);
 
-// PS2X ps2x;
+PS2X ps2x;
 
 // RF24 radio(PIN_CE, PIN_CSN);
 
@@ -118,15 +118,15 @@ void setup()
 	// ballgripservo1.write(ballGrip_Servo1_OPEN_ANGLE);
 
     //ps2x config CAUTION: MUST FIND CONTROLLER
-    // int error;
-    // do
-    // {  
-    //     error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
-    //     if(error == 0)            Serial.println("Controller found");
-    //     else if(error == 1)       Serial.println("ERROR: No Controller found");
-    //     else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
-    //     else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
-    // }while(error != 0);
+    int error;
+    do
+    {  
+        error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
+        if(error == 0)            Serial.println("Controller found");
+        else if(error == 1)       Serial.println("ERROR: No Controller found");
+        else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
+        else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
+    }while(error != 0);
 
     //nRF24L01
     // radio.begin();
@@ -144,7 +144,28 @@ void setup()
 void loop()
 {
 	//ps2
-	// ps2x.read_gamepad(false, 0);
+	ps2x.read_gamepad(false, 0);
+
+  if(ps2x.Button(PSB_PAD_UP))
+  {
+    chassis.move(255, 255);
+  }
+  else if(ps2x.Button(PSB_PAD_DOWN))
+  {
+    chassis.move(-255, -255);
+  }
+  else if(ps2x.Button(PSB_PAD_RIGHT))
+  {
+    chassis.move(255, -255);
+  }
+  else if(ps2x.Button(PSB_PAD_LEFT))
+  {
+    chassis.move(-255, 255);
+  }
+  else
+  {
+    chassis.move(0, 0);
+  }
 
 	// bool transmitted = false;
 	//controller read
@@ -236,13 +257,5 @@ void loop()
 	// 	ballgripservo1.write(potentio4_value * 180 / 1024);
 	// }
 
-
-	chassis.move(255, 255);
-	delay(1000);
-  chassis.move(0, 0);
-  delay(1000);
-	chassis.move(-255, -255);
-  delay(1000);
-  chassis.move(0, 0);
-	delay(1000);
+  delay(50);
 }
