@@ -27,8 +27,8 @@
 #define flagGrip_StepMotor2CW 31
 
 //ball grip
-#define ballGrip_StepMotorCLK 34
-#define ballGrip_StepMotorCW 35
+#define ballGrip_StepMotorCLK 52
+#define ballGrip_StepMotorCW 53
 
 #define ballGrip_DCMotor1IN1 26
 #define ballGrip_DCMotor1IN2 27             
@@ -226,9 +226,9 @@ void loop()
 	int stepy = 0;
 	int vz = 0;
 	if(ps2x.Button(PSB_PAD_UP)        || (message[8] & 0b10000000))
-		stepy = 1;
+		stepy = 50;
 	else if(ps2x.Button(PSB_PAD_DOWN) || (message[8] & 0b00100000))								
-		stepy = -1;
+		stepy = -50;
 	
 	if(ps2x.Button(PSB_L1)            || (message[8] & 0b00010000))											
 		vz = 255;
@@ -240,9 +240,9 @@ void loop()
 	stepy = 0;
 	vz = 0;
 	if(ps2x.Button(PSB_GREEN)     || message[8] & 0b00001000)										
-		stepy = 1;
+		stepy = 50;
 	else if(ps2x.Button(PSB_BLUE) || message[8] & 0b00000010)									
-		stepy = -1;
+		stepy = -50;
 	if(ps2x.Button(PSB_R1)        || message[8] & 0b00000001)											
 		vz = 255;
 	else if(ps2x.Button(PSB_R2)   || message[8] & 0b00000100)

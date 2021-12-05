@@ -31,8 +31,8 @@ void TrackChassis::move(int leftSpeed, int rightSpeed)
 	analogWrite(_rightWheelIN1, abs(rightSpeed_inRange) );
 
 	//set direction
-	digitalWrite(_leftWheelIN2, (leftSpeed_inRange > 0) );
-	digitalWrite(_rightWheelIN2, (rightSpeed_inRange < 0) );
+	digitalWrite(_leftWheelIN2, (leftSpeed_inRange < 0) );
+	digitalWrite(_rightWheelIN2, (rightSpeed_inRange > 0) );
 }
 
 int TrackChassis::inRangePM255(int number)
@@ -119,23 +119,23 @@ void FlagGrip::move(int stepy, int vz)
 	if(vz >= 0)
 	{
 		analogWrite(_zAxisNO1PWM, vz);
-		digitalWrite(_zAxisNO1IN1, HIGH);
-		digitalWrite(_zAxisNO1IN2, LOW);
+		digitalWrite(_zAxisNO1IN1, LOW);
+		digitalWrite(_zAxisNO1IN2, HIGH);
 
 		analogWrite(_zAxisNO2PWM, vz);
-		digitalWrite(_zAxisNO2IN1, HIGH);
-		digitalWrite(_zAxisNO2IN2, LOW);
+		digitalWrite(_zAxisNO2IN1, LOW);
+		digitalWrite(_zAxisNO2IN2, HIGH);
 	}
 	else
 	{
 		int tempv = -vz;
 		analogWrite(_zAxisNO1PWM, tempv);
-		digitalWrite(_zAxisNO1IN1, LOW);
-		digitalWrite(_zAxisNO1IN2, HIGH);
+		digitalWrite(_zAxisNO1IN1, HIGH);
+		digitalWrite(_zAxisNO1IN2, LOW);
 
 		analogWrite(_zAxisNO2PWM, tempv);
-		digitalWrite(_zAxisNO2IN1, LOW);
-		digitalWrite(_zAxisNO2IN2, HIGH);
+		digitalWrite(_zAxisNO2IN1, HIGH);
+		digitalWrite(_zAxisNO2IN2, LOW);
 	}
 }
 
