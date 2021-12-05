@@ -51,14 +51,15 @@ class FlagGrip
 class BallGrip
 {
 	public:
-		BallGrip(int yAxisCLK, int yAxisCW, 
-				 int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM, 
-				 int zAxisNO2IN1, int zAxisNO2IN2, int zAxisNO2PWM);
-		void move(int stepy, int vz);
+		BallGrip(int yAxisIN1, int yAxisIN2, int yAxisPWM, 
+				     int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM, 
+				     int zAxisNO2IN1, int zAxisNO2IN2, int zAxisNO2PWM);
+		void move(int vy, int vz);
 
 	private:
-		int _yAxisCLK;
-		int _yAxisCW;
+		int _yAxisIN1;
+		int _yAxisIN2;
+    int _yAxisPWM;
 
 		int _zAxisNO1IN1;
 		int _zAxisNO1IN2;

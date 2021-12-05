@@ -27,8 +27,9 @@
 #define flagGrip_StepMotor2CW 31
 
 //ball grip
-#define ballGrip_StepMotorCLK 52
-#define ballGrip_StepMotorCW 53
+#define ballGrip_DCMOTOR_TONGUE_IN1 52
+#define ballGrip_DCMOTOR_TONGUE_IN2 53
+#define ballGrip_DCMOTOR_TONGUE_PWM 13
 
 #define ballGrip_DCMotor1IN1 26
 #define ballGrip_DCMotor1IN2 27             
@@ -87,13 +88,13 @@ byte colPins[COLS] = {48, 49, 50, 51};*/
 TrackChassis chassis(chassis_DCMotorLeftIN1, chassis_DCMotorLeftIN2, chassis_DCMotorRightIN1, chassis_DCMotorRightIN2);
 
 FlagGrip flaggrip(flagGrip_LinearActuator1IN1, flagGrip_LinearActuator1IN2, flagGrip_LinearActuator1PWM,
-				  flagGrip_LinearActuator2IN1, flagGrip_LinearActuator2IN2, flagGrip_LinearActuator2PWM,
-				  flagGrip_StepMotor1CLK, flagGrip_StepMotor1CW,
-				  flagGrip_StepMotor2CLK, flagGrip_StepMotor2CW);
+				          flagGrip_LinearActuator2IN1, flagGrip_LinearActuator2IN2, flagGrip_LinearActuator2PWM,
+				          flagGrip_StepMotor1CLK, flagGrip_StepMotor1CW,
+				          flagGrip_StepMotor2CLK, flagGrip_StepMotor2CW);
 
-BallGrip ballgrip(ballGrip_StepMotorCLK, ballGrip_StepMotorCW,
-				  ballGrip_DCMotor1IN1, ballGrip_DCMotor1IN2, ballGrip_DCMotor1PWM,
-				  ballGrip_DCMotor2IN1, ballGrip_DCMotor2IN2, ballGrip_DCMotor2PWM);
+BallGrip ballgrip(ballGrip_DCMOTOR_TONGUE_IN1, ballGrip_DCMOTOR_TONGUE_IN2, ballGrip_DCMOTOR_TONGUE_PWM, 
+				          ballGrip_DCMotor1IN1, ballGrip_DCMotor1IN2, ballGrip_DCMotor1PWM,
+				          ballGrip_DCMotor2IN1, ballGrip_DCMotor2IN2, ballGrip_DCMotor2PWM);
 
 Servo ballgripservo1;
 Servo ballgripservo2;
@@ -237,17 +238,17 @@ void loop()
 	flaggrip.move(stepy, vz);
 
 	//ballgrip
-	stepy = 0;
+	int vy = 0;
 	vz = 0;
 	if(ps2x.Button(PSB_GREEN)     || message[8] & 0b00001000)										
-		stepy = 1;
+		vy = 100;
 	else if(ps2x.Button(PSB_BLUE) || message[8] & 0b00000010)									
-		stepy = -1;
+		vy = -100;
 	if(ps2x.Button(PSB_R1)        || message[8] & 0b00000001)											
 		vz = 255;
 	else if(ps2x.Button(PSB_R2)   || message[8] & 0b00000100)
 		vz = -255;
-	ballgrip.move(stepy, vz);
+	ballgrip.move(vy, vz);
 
 	//ball servo
 	if(ps2x.ButtonPressed(PSB_PINK))
