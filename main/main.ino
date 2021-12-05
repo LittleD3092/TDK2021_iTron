@@ -125,16 +125,18 @@ void setup()
   ballgripservo2.attach(ballGrip_Servo2);
   ballgripservo2.write(ballGrip_Servo2_OPEN_ANGLE);
 
+  chassis.move(0, 0);
+
   //ps2x config CAUTION: MUST FIND CONTROLLER
-  // int error;
-  // do
-  // {  
-  //     error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
-  //     if(error == 0)            Serial.println("Controller found");
-  //     else if(error == 1)       Serial.println("ERROR: No Controller found");
-  //     else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
-  //     else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
-  // }while(error != 0);
+  int error;
+  do
+  {  
+    error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
+    if(error == 0)            Serial.println("Controller found");
+    else if(error == 1)       Serial.println("ERROR: No Controller found");
+    else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
+    else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
+  }while(error != 0);
 
   //nRF24L01
   //radio.begin();
