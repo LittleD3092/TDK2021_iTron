@@ -20,11 +20,13 @@
 #define flagGrip_LinearActuator2IN2 43
 #define flagGrip_LinearActuator2PWM 5
 
-#define flagGrip_StepMotor1CLK 34
-#define flagGrip_StepMotor1CW 35
+#define flagGrip_Motor_Y1_IN1 34  
+#define flagGrip_Motor_Y1_IN2 35 
+#define flagGrip_Motor_Y1_PWM 9
 
-#define flagGrip_StepMotor2CLK 30
-#define flagGrip_StepMotor2CW 31
+#define flagGrip_Motor_Y2_IN1 30
+#define flagGrip_Motor_Y2_IN2 31
+#define flagGrip_Motor_Y2_PWM 10
 
 //ball grip
 #define ballGrip_DCMOTOR_TONGUE_IN1 52
@@ -39,13 +41,11 @@
 #define ballGrip_DCMotor2IN2 25             
 #define ballGrip_DCMotor2PWM 7
 
-#define ballGrip_Servo1 9
-#define ballGrip_Servo1_OPEN_ANGLE 0
-#define ballGrip_Servo1_CLOSE_ANGLE 180
+#define ballGrip_Servo1 11
+#define ballGrip_Servo1_OPEN_ANGLE 90
 
-#define ballGrip_Servo2 10
-#define ballGrip_Servo2_OPEN_ANGLE 0
-#define ballGrip_Servo2_CLOSE_ANGLE 180
+#define ballGrip_Servo2 12
+#define ballGrip_Servo2_OPEN_ANGLE 90
 
 //climb boost
 #define climbBoost_LinearActuatorIN1 46
@@ -88,13 +88,13 @@ byte colPins[COLS] = {48, 49, 50, 51};*/
 TrackChassis chassis(chassis_DCMotorLeftIN1, chassis_DCMotorLeftIN2, chassis_DCMotorRightIN1, chassis_DCMotorRightIN2);
 
 FlagGrip flaggrip(flagGrip_LinearActuator1IN1, flagGrip_LinearActuator1IN2, flagGrip_LinearActuator1PWM,
-				          flagGrip_LinearActuator2IN1, flagGrip_LinearActuator2IN2, flagGrip_LinearActuator2PWM,
-				          flagGrip_StepMotor1CLK, flagGrip_StepMotor1CW,
-				          flagGrip_StepMotor2CLK, flagGrip_StepMotor2CW);
+				  flagGrip_LinearActuator2IN1, flagGrip_LinearActuator2IN2, flagGrip_LinearActuator2PWM,
+				  flagGrip_Motor_Y1_IN1, flagGrip_Motor_Y1_IN2, flagGrip_Motor_Y1_PWM, 
+				  flagGrip_Motor_Y2_IN1, flagGrip_Motor_Y2_IN2, flagGrip_Motor_Y2_PWM);
 
 BallGrip ballgrip(ballGrip_DCMOTOR_TONGUE_IN1, ballGrip_DCMOTOR_TONGUE_IN2, ballGrip_DCMOTOR_TONGUE_PWM, 
-				          ballGrip_DCMotor1IN1, ballGrip_DCMotor1IN2, ballGrip_DCMotor1PWM,
-				          ballGrip_DCMotor2IN1, ballGrip_DCMotor2IN2, ballGrip_DCMotor2PWM);
+				  ballGrip_DCMotor1IN1, ballGrip_DCMotor1IN2, ballGrip_DCMotor1PWM,
+				  ballGrip_DCMotor2IN1, ballGrip_DCMotor2IN2, ballGrip_DCMotor2PWM);
 
 Servo ballgripservo1;
 Servo ballgripservo2;
@@ -121,27 +121,27 @@ void setup()
 
 	//ball grip servo
 	ballgripservo1.attach(ballGrip_Servo1);
-  ballgripservo1.write(ballGrip_Servo1_OPEN_ANGLE);
+  	ballgripservo1.write(ballGrip_Servo1_OPEN_ANGLE);
 
-  ballgripservo2.attach(ballGrip_Servo2);
-  ballgripservo2.write(ballGrip_Servo2_OPEN_ANGLE);
+  	ballgripservo2.attach(ballGrip_Servo2);
+  	ballgripservo2.write(ballGrip_Servo2_OPEN_ANGLE);
 
-  chassis.move(0, 0);
+  	chassis.move(0, 0);
 
-  //ps2x config CAUTION: MUST FIND CONTROLLER
-  int error;
-  do
-  {  
-    error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
-    if(error == 0)            Serial.println("Controller found");
-    else if(error == 1)       Serial.println("ERROR: No Controller found");
-    else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
-    else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
-  }while(error != 0);
+	//ps2x config CAUTION: MUST FIND CONTROLLER
+	int error;
+	do
+	{  
+		error = ps2x.config_gamepad(PS2_CLOCK_PORT, PS2_COMMAND_PORT, PS2_ATTRIBUTE_PORT, PS2_DATA_PORT, SUPPORT_ANALOG_JOYSTICK, SUPPORT_VIBRATION);
+		if(error == 0)            Serial.println("Controller found");
+		else if(error == 1)       Serial.println("ERROR: No Controller found");
+		else if(error == 2)       Serial.println("ERROR: Controller not accepting command");
+		else if(error == 3)       Serial.println("ERROR: Controller refusing to enter Pressures Mode, may not support it");
+	}while(error != 0);
 
-  //nRF24L01
-  //radio.begin();
-  //enter frequency
+  	//nRF24L01
+  	//radio.begin();
+  	//enter frequency
 	//radio.setChannel( FREQUENCY - 2400 );
 	//radio.setPALevel( PA_LEVEL );
 	//radio.setDataRate( DATA_RATE );
@@ -160,20 +160,20 @@ void loop()
 	//bool transmitted = false;
 	////controller read
 	byte message[11] = {0};
-  //if( radio.available( &PIPE ) )
-  //{
-  //	radio.read( &message, sizeof(message) );
-  //}
-  //if( Serial1.available() )
-  //{
-  //	transmitted = true;
-  //	int counter = 0;
-  //	while( Serial1.available() )
-  //	{
-  //		message[counter] = (byte)Serial1.read();
-  //		counter++;
-  //	}
-  //}
+	//if( radio.available( &PIPE ) )
+	//{
+	//	radio.read( &message, sizeof(message) );
+	//}
+	//if( Serial1.available() )
+	//{
+	//	transmitted = true;
+	//	int counter = 0;
+	//	while( Serial1.available() )
+	//	{
+	//		message[counter] = (byte)Serial1.read();
+	//		counter++;
+	//	}
+	//}
 
 	//Serial.println(transmitted);
 	//Serial.println();
@@ -202,48 +202,48 @@ void loop()
 	//else
 	//	chassis.move(0, 0);
 
-  if( ps2x.Analog(PSS_LX) > (128 + DEAD_AREA) )
-  {
-    chassis.move(255, -255);
-  }
-  else if( ps2x.Analog(PSS_LX) < (128 - DEAD_AREA) )
-  {
-    chassis.move(-255, 255);
-  }
-  else if( ps2x.Analog(PSS_LY) > (128 + DEAD_AREA) )
-  {
-    chassis.move(-255, -255);
-  }
-  else if( ps2x.Analog(PSS_LY) < (128 - DEAD_AREA) )
-  {
-    chassis.move(255, 255);
-  }
-  else
-  {
-    chassis.move(0, 0);
-  }
+	if( ps2x.Analog(PSS_LX) < (128 - DEAD_AREA) )
+	{
+		chassis.move(255, -255);
+	}
+	else if( ps2x.Analog(PSS_LX) > (128 + DEAD_AREA) )
+	{
+		chassis.move(-255, 255);
+	}
+	else if( ps2x.Analog(PSS_LY) > (128 + DEAD_AREA) )
+	{
+		chassis.move(-255, -255);
+	}
+	else if( ps2x.Analog(PSS_LY) < (128 - DEAD_AREA) )
+	{
+		chassis.move(255, 255);
+	}
+	else
+	{
+		chassis.move(0, 0);
+	}
   
 	//flag grip
-	int stepy = 0;
+	int vy = 0;
 	int vz = 0;
 	if(ps2x.Button(PSB_PAD_UP)        || (message[8] & 0b10000000))
-		stepy = 1;
+		vy = 255;
 	else if(ps2x.Button(PSB_PAD_DOWN) || (message[8] & 0b00100000))								
-		stepy = -1;
+		vy = -255;
 	
 	if(ps2x.Button(PSB_L1)            || (message[8] & 0b00010000))											
 		vz = 255;
 	else if(ps2x.Button(PSB_L2)       || (message[8] & 0b01000000))									
 		vz = -255;
-	flaggrip.move(stepy, vz);
+	flaggrip.move(vy, vz);
 
 	//ballgrip
-	int vy = 0;
+	vy = 0;
 	vz = 0;
 	if(ps2x.Button(PSB_GREEN)     || message[8] & 0b00001000)										
-		vy = 100;
+		vy = 255;
 	else if(ps2x.Button(PSB_BLUE) || message[8] & 0b00000010)									
-		vy = -100;
+		vy = -255;
 	if(ps2x.Button(PSB_R1)        || message[8] & 0b00000001)											
 		vz = 255;
 	else if(ps2x.Button(PSB_R2)   || message[8] & 0b00000100)
@@ -253,35 +253,32 @@ void loop()
 	//ball servo
 	if(ps2x.ButtonPressed(PSB_PINK))
 	{
-		if(ballgripservo1.read() == ballGrip_Servo1_CLOSE_ANGLE)
-		{
-			ballgripservo1.write(ballGrip_Servo1_OPEN_ANGLE);
-      ballgripservo2.write(ballGrip_Servo2_OPEN_ANGLE);
-		}
-		else if(ballgripservo1.read() == ballGrip_Servo1_OPEN_ANGLE)
-		{
-			ballgripservo1.write(ballGrip_Servo1_CLOSE_ANGLE);
-      ballgripservo2.write(ballGrip_Servo2_CLOSE_ANGLE);
-		}
+		ballgripservo1.write( ballgripservo1.read() - 5 );
+    ballgripservo2.write( ballgripservo2.read() - 5 );
 	}
-  //int potentio4_value = ( message[6] * 256 + message[7] );
-  //if(potentio4_value > 0)
-  //{
-  //	ballgripservo1.write(potentio4_value * 180 / 1024);
-  //}
+  else if( ps2x.ButtonPressed(PSB_RED) )
+  {
+    ballgripservo1.write( ballgripservo1.read() + 5 );
+    ballgripservo2.write( ballgripservo2.read() + 5 );
+  }
+	//int potentio4_value = ( message[6] * 256 + message[7] );
+	//if(potentio4_value > 0)
+	//{
+	//	ballgripservo1.write(potentio4_value * 180 / 1024);
+	//}
 
-  if( ps2x.Button(PSB_PAD_LEFT) )
-  {
-    climbboost.push();
-  }
-  else if( ps2x.Button( PSB_PAD_RIGHT ) )
-  {
-    climbboost.pull();
-  }
-  else
-  {
-    climbboost.stop();
-  }
+	if( ps2x.Button(PSB_PAD_LEFT) )
+	{
+		climbboost.push();
+	}
+	else if( ps2x.Button( PSB_PAD_RIGHT ) )
+	{
+		climbboost.pull();
+	}
+	else
+	{
+		climbboost.stop();
+	}
   
 	delay(1);
 }

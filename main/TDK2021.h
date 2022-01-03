@@ -25,9 +25,9 @@ class FlagGrip
 	public:
 		FlagGrip(int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM, 
 			     int zAxisNO2IN1, int zAxisNO2IN2, int zAxisNO2PWM, 
-			     int yAxisNO1CLK, int yAxisNO1CW,
-			     int yAxisNO2CLK, int yAxisNO2CW);
-		void move(int stepy, int vz);
+			     int yAxisNO1IN1, int yAxisNO1IN2, int yAxisNO1PWM, 
+				 int yAxisNO2IN1, int yAxisNO2IN2, int yAxisNO2PWM);
+		void move(int vy, int vz);
 
 	private:
 		//up & down
@@ -40,11 +40,13 @@ class FlagGrip
 		int _zAxisNO2PWM;
 
 		//foward backward NO.1
-		int _yAxisNO1CLK;
-		int _yAxisNO1CW;
+		int _yAxisNO1IN1;
+		int _yAxisNO1IN2;
+		int _yAxisNO1PWM;
 		//NO.2
-		int _yAxisNO2CLK;
-		int _yAxisNO2CW;
+		int _yAxisNO2IN1;
+		int _yAxisNO2IN2;
+		int _yAxisNO2PWM;
 
 };
 

@@ -48,8 +48,8 @@ int TrackChassis::inRangePM255(int number)
 
 FlagGrip::FlagGrip(int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM, 
 			       int zAxisNO2IN1, int zAxisNO2IN2, int zAxisNO2PWM, 
-			       int yAxisNO1CLK, int yAxisNO1CW,
-			       int yAxisNO2CLK, int yAxisNO2CW)
+			       int yAxisNO1IN1, int yAxisNO1IN2, int yAxisNO1PWM,
+			       int yAxisNO2IN1, int yAxisNO2IN2, int yAxisNO2PWM)
 {
 	pinMode(zAxisNO1IN1, OUTPUT);
 	pinMode(zAxisNO1IN2, OUTPUT);
@@ -59,11 +59,13 @@ FlagGrip::FlagGrip(int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM,
 	pinMode(zAxisNO2IN2, OUTPUT);
 	pinMode(zAxisNO2PWM, OUTPUT);
 
-	pinMode(yAxisNO1CLK, OUTPUT);
-	pinMode(yAxisNO1CW, OUTPUT);
+	pinMode(yAxisNO1IN1, OUTPUT);
+	pinMode(yAxisNO1IN2, OUTPUT);
+	pinMode(yAxisNO1PWM, OUTPUT);
 
-	pinMode(yAxisNO2CLK, OUTPUT);
-	pinMode(yAxisNO2CW, OUTPUT);
+	pinMode(yAxisNO2IN1, OUTPUT);
+	pinMode(yAxisNO2IN2, OUTPUT);
+	pinMode(yAxisNO2PWM, OUTPUT);
 
 	_zAxisNO1IN1 = zAxisNO1IN1;
 	_zAxisNO1IN2 = zAxisNO1IN2;
@@ -73,48 +75,27 @@ FlagGrip::FlagGrip(int zAxisNO1IN1, int zAxisNO1IN2, int zAxisNO1PWM,
 	_zAxisNO2IN2 = zAxisNO2IN2;
 	_zAxisNO2PWM = zAxisNO2PWM;
 
-	_yAxisNO1CLK = yAxisNO1CLK;
-	_yAxisNO1CW = yAxisNO1CW;
-	
-	_yAxisNO2CLK = yAxisNO2CLK;
-	_yAxisNO2CW = yAxisNO2CW;
+	_yAxisNO1IN1 = yAxisNO1IN1;
+	_yAxisNO1IN2 = yAxisNO1IN2;
+	_yAxisNO1PWM = yAxisNO1PWM;
+
+	_yAxisNO2IN1 = yAxisNO2IN1;
+	_yAxisNO2IN2 = yAxisNO2IN2;
+	_yAxisNO2PWM = yAxisNO2PWM;
 }
 
-void FlagGrip::move(int stepy, int vz)
+void FlagGrip::move(int vy, int vz)
 {
 	if(vz > 255)		vz = 255;
 	if(vz < -255)		vz = -255;
 
+	digitalWrite(_yAxisNO1IN1, vy > 0);
+	digitalWrite(_yAxisNO1IN2, vy < 0);
+	analogWrite(_yAxisNO1PWM, abs( vy ) );
 
-	if(stepy >= 0)
-	{
-		digitalWrite(_yAxisNO1CW, LOW);
-		digitalWrite(_yAxisNO2CW, LOW);
-		for(int i = 0; i < stepy; i++)
-		{
-			digitalWrite(_yAxisNO1CLK, HIGH);
-			digitalWrite(_yAxisNO2CLK, HIGH);
-			delay(1);
-			digitalWrite(_yAxisNO1CLK, LOW);
-			digitalWrite(_yAxisNO2CLK, LOW);
-			delay(1);
-		}
-	}
-	else
-	{
-		digitalWrite(_yAxisNO1CW, HIGH);
-		digitalWrite(_yAxisNO2CW, HIGH);
-		for(int i = 0; i < stepy; i++)
-		{
-			digitalWrite(_yAxisNO1CLK, HIGH);
-			digitalWrite(_yAxisNO2CLK, HIGH);
-			delay(1);
-			digitalWrite(_yAxisNO1CLK, LOW);
-			digitalWrite(_yAxisNO2CLK, LOW);
-			delay(1);
-		}
-	}
-
+	digitalWrite(_yAxisNO2IN1, vy > 0);
+	digitalWrite(_yAxisNO2IN2, vy < 0);
+	analogWrite(_yAxisNO2PWM, abs( vy ) );
 
 	if(vz >= 0)
 	{
@@ -145,7 +126,7 @@ BallGrip::BallGrip(int yAxisIN1, int yAxisIN2, int yAxisPWM,
 {
 	pinMode(yAxisIN1, OUTPUT);
 	pinMode(yAxisIN2, OUTPUT);
-  pinMode(yAxisPWM, OUTPUT);
+  	pinMode(yAxisPWM, OUTPUT);
 
 	pinMode(zAxisNO1IN1, OUTPUT);
 	pinMode(zAxisNO1IN2, OUTPUT);
@@ -157,7 +138,7 @@ BallGrip::BallGrip(int yAxisIN1, int yAxisIN2, int yAxisPWM,
 
 	_yAxisIN1 = yAxisIN1;
 	_yAxisIN2 = yAxisIN2;
-  _yAxisPWM = yAxisPWM;
+  	_yAxisPWM = yAxisPWM;
 
 	_zAxisNO1IN1 = zAxisNO1IN1;
 	_zAxisNO1IN2 = zAxisNO1IN2;
